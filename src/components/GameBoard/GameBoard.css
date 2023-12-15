@@ -275,3 +275,35 @@
   background-color: #45a049; /* Darker shade of green when hovered */
   transform: scale(1.05); /* Slightly increase the size when hovered */
 }
+
+/* Responsive design for smaller screens */
+@media (max-width: 768px) {
+  .grids-container {
+    flex-direction: column; /* stack grids vertically on small screens */
+    align-items: center; /* center grids horizontally */
+  }
+
+  .attack-container, .computer-attack-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .grid-row, .attack-grid, .computer-attack-grid {
+    /* width: 97%; */
+    overflow-x: auto;
+    /* padding-left: 3%; */
+  }
+  .scoreboard {
+    width: 85%;
+  }
+
+  .rules {
+    margin-top: 48%;
+    width:70%;
+  }
+  .window {
+    background-size: 458px 1800px;
+    background-position: top;
+  }
+}
