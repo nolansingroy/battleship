@@ -321,7 +321,7 @@ const GameBoard: React.FC = () => {
               beatFade
               style={{ color: '#ced2da' }}
             />{' '}
-            Grey: Attack missed the ship
+            Grey: You missed!
           </li>
           <li>
             <FontAwesomeIcon
@@ -330,7 +330,7 @@ const GameBoard: React.FC = () => {
               style={{ color: '#ff0000' }}
             />
             <span> </span>
-            Red: Attack was a hit
+            Red: It's a hit!
           </li>
           <hr></hr>
         </p>
