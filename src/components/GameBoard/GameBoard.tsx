@@ -58,7 +58,6 @@ const GameBoard: React.FC = () => {
 
   const playMissSound = () => {
     // todo: find missed sound audio file
-    // const missSound = new Audio('/missSound.mp3');
     console.log('Missed Missle sound playing now!');
     // missSound.play();
   };
@@ -515,6 +514,10 @@ const GameBoard: React.FC = () => {
 
 export default GameBoard;
 
+
+////// --- Exporting Functions for Jest Testing --- /////
+
+
 export const areAllShipsSunk = (grid: any[]) => {
   // Log the entire grid for debugging
   console.log('Grid:', grid);
@@ -534,4 +537,16 @@ export const areAllShipsSunk = (grid: any[]) => {
   // Check if the number of 'hit' cells equals the total number of ship tiles
   const totalShipTiles = 15; // Total number of ship tiles
   return hitCount === totalShipTiles;
+};
+
+
+export const playerScores = (playerScore: number, setPlayerScore: (arg0: (prevScore: number) => number) => void, setGamePhase: (arg0: string) => void, playHitSound: () => void, triggerConfetti: () => void) => {
+  if (playerScore < 15) {
+    setPlayerScore((prevScore: number) => prevScore + 1);
+    playHitSound();
+    // console.log('player scores'); // Commented out as logs are not usually tested
+  } else {
+    setGamePhase('gameOver');
+    triggerConfetti();
+  }
 };
