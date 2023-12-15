@@ -23,8 +23,8 @@ function App() {
     //   </header>
     // </div>
     <div className="App">
-    <GameBoard />
-  </div>
+      <GameBoard />
+    </div>
   );
 }
 

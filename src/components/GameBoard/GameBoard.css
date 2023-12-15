@@ -1,16 +1,277 @@
-.game-board {
-    display: grid;
-    grid-template-columns: repeat(10, 0fr);
-    grid-gap: 1px;
+  .game-board {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 3%;
+  }
+
+  .computers-board {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 3%;
   }
   
-  .row {
-    display: contents;
+  .grid-header, .row {
+    display: flex;
+  }
+
+  .grid-row {
+    display: flex;
   }
   
-  .cell {
+  .grid-cell {
     width: 30px;
     height: 30px;
     border: 1px solid #333;
-    background-color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
+  
+  .header-cell, .cell {
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    line-height: 30px; /* Center text vertically */
+    border: 1px solid #333; /* Visible border */
+    background-color: #fff; /* Background color */
+  }
+  
+  .corner-cell {
+    width: 30px;
+    height: 30px;
+  }
+  
+  .cell.ship {
+    background-color: #007bff; /* Change color when ship is placed */
+  }
+
+  .title {
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    font-size: 26px;
+  }
+
+  .computer-grid .row {
+    display: flex;
+  }
+  
+  .computer-grid .cell {
+    width: 30px;
+    height: 30px;
+    border: 1px solid black;
+  }
+  
+  .computer-grid .cell.ship {
+    background-color: gray;
+  }
+
+
+  .computer-grid .cell.hit {
+    background-color: red; /* Style for hit cells */
+  }
+  
+  .computer-grid .cell.miss {
+    background-color: lightgray; /* Style for miss cells */
+  }
+
+  .attack-container {
+    /* display: flex; */
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    height: 100vh; /* Full viewport height */
+  }
+  .attack-container-title {
+    align-items: center;
+  }
+
+  .attack-grid .cell {
+    /* Common styles for cells */
+    width: 30px;
+    height: 30px;
+    border: 1px solid black;
+  }
+  
+  .attack-grid .cell.hit {
+    background-color: red; /* Style for hit cells */
+  }
+  
+  .attack-grid .cell.miss {
+    background-color: lightgray; /* Style for miss cells */
+  }
+
+
+
+  .computer-attack-grid {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .computer-attack-grid .row {
+    display: flex;
+  }
+  
+  .computer-attack-grid .cell {
+    width: 30px;
+    height: 30px;
+    border: 1px solid black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .computer-attack-grid .cell.hit {
+    background-color: red; /* Red color for hit cells */
+  }
+  
+  .computer-attack-grid .cell.miss {
+    background-color: lightgray; /* Light gray color for miss cells */
+  }
+
+
+  .grids-container {
+    display: flex;
+    justify-content: center;
+    align-items: start; /* Align grids to the top */
+    gap: 20px; /* Optional space between grids */
+    /* background-color: rgb(0, 0, 0); */
+  }
+  .game-message {
+    font-size: 36px;
+    font-weight: 600;
+    color: red;
+  }
+
+  .attack-container-title {
+  text-align: center; /* Center the text */
+  margin-bottom: 20px; /* Space between title and fleets */
+    /* other styles as needed */
+  }
+
+
+  .rules {
+    display: inline-block;
+    width: 400px;
+    height: 154px;
+    text-align: left;
+    padding-top: 25%;
+    /* margin-top: 250px; */
+  }
+
+  .startGameBtn {
+    background-color: #4CAF50; /* Green background */
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 30px;
+    margin: 30px 2px;
+    cursor: pointer;
+    border-radius: 8px; /* Rounded corners */
+    transition: background-color 0.3s, box-shadow 0.3s, transform 0.3s; /* Smooth transition for hover effects */
+}
+
+.startGameBtn:hover, .startGameBtn:focus {
+    background-color: #45a049; /* Darker shade of green */
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2); /* Add shadow for 3D effect */
+    transform: translateY(-2px); /* Slight lift */
+}
+
+
+.scoreboard {
+  margin-top: 20px;
+  padding: 10px;
+  background-color: #f0f0f0;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.scoreboard h3 {
+  margin-bottom: 10px;
+}
+
+.scoreboard p {
+  margin: 5px 0;
+  font-size: 1.2em;
+  font-weight: bold;
+}
+
+
+.toggleOrientationButton {
+  background-color: #007bff; /* Blue background */
+  color: white; /* White text */
+  margin-top: 10px;
+  padding: 10px 20px; /* Padding */
+  border: none; /* No border */
+  border-radius: 5px; /* Rounded corners */
+  font-size: 1em; /* Font size */
+  cursor: pointer; /* Pointer cursor on hover */
+  transition: background-color 0.2s, transform 0.2s; /* Smooth transition */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Box shadow for depth */
+}
+
+.toggleOrientationButton:hover {
+  background-color: #0056b3; /* Darker blue on hover */
+  transform: translateY(-2px); /* Move up slightly on hover */
+}
+
+.toggleOrientationButton:active {
+  background-color: #004085; /* Even darker blue when clicked */
+  transform: translateY(1px); /* Move down slightly when clicked */
+}
+
+.positionComputerButton {
+  background-color: #28a745; /* Green background */
+  color: white; /* White text */
+  padding: 12px 24px; /* Padding */
+  border: none; /* No border */
+  border-radius: 6px; /* Rounded corners */
+  font-size: 1em; /* Font size */
+  cursor: pointer; /* Pointer cursor on hover */
+  transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s; /* Smooth transition */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.25); /* Box shadow for depth */
+  font-weight: bold; /* Bold font */
+  margin-bottom: 2px;
+}
+
+.positionComputerButton:hover {
+  background-color: #218838; /* Darker green on hover */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* Larger box-shadow for hover effect */
+  transform: translateY(-4px); /* Move up slightly on hover */
+}
+
+.positionComputerButton:active {
+  background-color: #1e7e34; /* Even darker green when clicked */
+  transform: translateY(2px); /* Move down slightly when clicked */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Smaller box-shadow for clicked effect */
+}
+.window {
+  background-color: #3887cd;
+  background-image: url('../../assets/img/background-battleship.jpg');
+  background-size: contain; /* Cover the entire area of the element */
+  background-position: center; /* Center the image */
+  background-repeat: no-repeat; 
+}
+
+.playAgainBtn {
+  background-color: #4CAF50; /* Green background */
+  border: none;
+  color: white; /* White text */
+  padding: 15px 32px; /* Padding around the text */
+  text-align: center; /* Centered text */
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px; /* Medium font size */
+  margin: 4px 2px;
+  cursor: pointer; /* Cursor changes to a pointer when hovered */
+  border-radius: 8px; /* Rounded corners */
+  transition: background-color 0.3s, transform 0.3s; /* Smooth transition for hover effects */
+}
+
+.playAgainBtn:hover {
+  background-color: #45a049; /* Darker shade of green when hovered */
+  transform: scale(1.05); /* Slightly increase the size when hovered */
+}

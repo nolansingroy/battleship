@@ -1,0 +1,22 @@
+.ship {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #007bff; /* Blue background for ships */
+    color: white; /* White text color */
+    border: 1px solid #0056b3; /* Darker blue border */
+    cursor: grab; /* Cursor indicates the ship is draggable */
+    user-select: none; /* Prevents text selection during drag */
+  }
+  
+  /* Style adjustments for different ship lengths (if needed) */
+  .ship.small { width: 60px; } /* Example for a smaller ship */
+  .ship.medium { width: 120px; } /* Example for a medium ship */
+  .ship.large { width: 180px; } /* Example for a larger ship */
+
+  .ship.placed {
+    background-color: #ccc; /* Gray background for placed ships */
+    color: #666; /* Darker text color */
+    cursor: not-allowed; /* Change cursor to indicate it's not draggable */
+    pointer-events: none; /* Prevents interactions */
+  }
