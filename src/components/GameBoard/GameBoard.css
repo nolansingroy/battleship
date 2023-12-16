@@ -250,9 +250,8 @@
 }
 .window {
   background-color: #3887cd;
-  background-image: url('../../assets/img/background-battleship.jpg');
-  background-size: contain; /* Cover the entire area of the element */
-  background-position: center; /* Center the image */
+  background-image: url('../../assets/img/BattleShipHighRes.png');
+  background-position: top; /* Center the image */
   background-repeat: no-repeat; 
 }
 
@@ -303,7 +302,7 @@
     width:70%;
   }
   .window {
-    background-size: 458px 1800px;
+    background-size: 1458px 1800px;
     background-position: top;
   }
 }
