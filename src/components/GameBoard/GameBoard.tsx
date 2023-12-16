@@ -16,24 +16,24 @@ const GameBoard: React.FC = () => {
   const [playerScore, setPlayerScore] = useState(0);
   const [computerScore, setComputerScore] = useState(0);
   const [isPlayersTurn, setIsPlayersTurn] = useState(true);
-
   const [grid, setGrid] = useState(initialGridValue); //playerGrid
   const [computerGrid, setComputerGrid] = useState(initialGridValue); //computerGrid
-
   const [gamePhase, setGamePhase] = useState('setup'); // 'setup', 'playing', 'gameOver'
-  const initialAttackGridValue = Array(10)
-    .fill(null)
-    .map(() => Array(10).fill('empty'));
-  const [attackGrid, setAttackGrid] = useState(initialAttackGridValue);
-
+  // const initialAttackGridValue = Array(10)
+  //   .fill(null)
+  //   .map(() => Array(10).fill('empty'));
+  const [attackGrid, setAttackGrid] = useState(initialGridValue);
   const [computerAttackGrid, setComputerAttackGrid] =
     useState(initialGridValue);
-
   const [ships, setShips] = useState<Ship[]>(initialShips);
   const [selectedShip, setSelectedShip] = useState<Ship | null>(null);
   const [orientation, setOrientation] = useState<'horizontal' | 'vertical'>(
     'horizontal'
   );
+
+  // define the type for the ship
+  type GridCell = 'empty' | 'ship'; // Add other states as needed
+  type Grid = GridCell[][];
 
   const triggerConfetti = () => {
     confetti({
@@ -59,7 +59,6 @@ const GameBoard: React.FC = () => {
   const playMissSound = () => {
     // todo: find missed sound audio file
     console.log('Missed Missle sound playing now!');
-    // missSound.play();
   };
 
   const playerScores = () => {
@@ -77,14 +76,12 @@ const GameBoard: React.FC = () => {
     if (computerScore < 15) {
       setComputerScore((prevScore) => prevScore + 1);
       playHitSound();
-      console.log('computer scores');
     }
   };
 
   const startGame = () => {
     placeComputerShips();
     setGamePhase('playing');
-    console.log('start game called');
   };
 
   const areAllShipsSunk = (grid: any[]) => {
@@ -266,10 +263,6 @@ const GameBoard: React.FC = () => {
 
     setComputerGrid(newComputerGrid);
   };
-
-  // define the type for the ship
-  type GridCell = 'empty' | 'ship'; // Add other states as needed
-  type Grid = GridCell[][];
 
   const canPlaceShip = (
     grid: Grid,
@@ -514,9 +507,7 @@ const GameBoard: React.FC = () => {
 
 export default GameBoard;
 
-
 ////// --- Exporting Functions for Jest Testing --- /////
-
 
 export const areAllShipsSunk = (grid: any[]) => {
   // Log the entire grid for debugging
@@ -539,8 +530,14 @@ export const areAllShipsSunk = (grid: any[]) => {
   return hitCount === totalShipTiles;
 };
 
-
-export const playerScores = (playerScore: number, setPlayerScore: (arg0: (prevScore: number) => number) => void, setGamePhase: (arg0: string) => void, playHitSound: () => void, triggerConfetti: () => void) => {
+//// playerScore ///////
+export const playerScores = (
+  playerScore: number,
+  setPlayerScore: (arg0: (prevScore: number) => number) => void,
+  setGamePhase: (arg0: string) => void,
+  playHitSound: () => void,
+  triggerConfetti: () => void
+) => {
   if (playerScore < 15) {
     setPlayerScore((prevScore: number) => prevScore + 1);
     playHitSound();
@@ -548,5 +545,53 @@ export const playerScores = (playerScore: number, setPlayerScore: (arg0: (prevSc
   } else {
     setGamePhase('gameOver');
     triggerConfetti();
+  }
+};
+
+export const handlePlayerAttack = (
+  row: number,
+  col: number,
+  isPlayersTurn: boolean,
+  attackGrid: string[][],
+  computerGrid: string[][],
+  setAttackGrid: (grid: string[][]) => void,
+  playerScores: () => void,
+  playMissSound: () => void,
+  areAllShipsSunk: (grid: string[][]) => boolean,
+  setGamePhase: (phase: string) => void,
+  setIsPlayersTurn: (isTurn: boolean) => void,
+  handleComputerAttack: () => void
+) => {
+  if (!isPlayersTurn || attackGrid[row][col] !== 'empty') {
+    return; // Ignore if it's not the player's turn or if the cell is already attacked
+  }
+
+  // Check if the cell on the attackGrid has already been attacked
+  if (attackGrid[row][col] !== 'empty') {
+    return; // Ignore if the cell has already been attacked
+  }
+
+  const newAttackGrid = attackGrid.map((r) => [...r]);
+
+  // Check the computer's grid to see if there's a ship at the specified coordinates
+  if (computerGrid[row][col] === 'ship') {
+    newAttackGrid[row][col] = 'hit'; // Mark as hit on the attack grid
+    console.log('missile hit a ship!');
+    playerScores(); // update player scores function
+  } else {
+    newAttackGrid[row][col] = 'miss'; // Mark as miss on the attack grid
+    console.log('missile missed!');
+    playMissSound();
+  }
+
+  setAttackGrid(newAttackGrid); // Update the attack grid state
+  // After updating the attack grid, check if all computer ships are sunk
+  if (areAllShipsSunk(newAttackGrid)) {
+    setGamePhase('gameOver');
+    console.log('gameover - you won');
+    //update a variable
+  } else {
+    setIsPlayersTurn(false);
+    setTimeout(handleComputerAttack, 500);
   }
 };
