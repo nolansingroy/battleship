@@ -12,6 +12,10 @@ const initialGridValue = Array(10)
   .fill(null)
   .map(() => Array(10).fill('empty'));
 
+const initialAttackGridValue = Array(10)
+  .fill(null)
+  .map(() => Array(10).fill('empty'));
+
 const GameBoard: React.FC = () => {
   const [playerScore, setPlayerScore] = useState(0);
   const [computerScore, setComputerScore] = useState(0);
@@ -19,10 +23,7 @@ const GameBoard: React.FC = () => {
   const [grid, setGrid] = useState(initialGridValue); //playerGrid
   const [computerGrid, setComputerGrid] = useState(initialGridValue); //computerGrid
   const [gamePhase, setGamePhase] = useState('setup'); // 'setup', 'playing', 'gameOver'
-  // const initialAttackGridValue = Array(10)
-  //   .fill(null)
-  //   .map(() => Array(10).fill('empty'));
-  const [attackGrid, setAttackGrid] = useState(initialGridValue);
+  const [attackGrid, setAttackGrid] = useState(initialAttackGridValue);
   const [computerAttackGrid, setComputerAttackGrid] =
     useState(initialGridValue);
   const [ships, setShips] = useState<Ship[]>(initialShips);
