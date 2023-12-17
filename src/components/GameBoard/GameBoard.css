@@ -201,7 +201,7 @@
 
 
 .toggleOrientationButton {
-  background-color: #007bff; /* Blue background */
+  background-color: #4CAF50; /* Green background */
   color: white; /* White text */
   margin-top: 10px;
   padding: 10px 20px; /* Padding */
@@ -214,17 +214,17 @@
 }
 
 .toggleOrientationButton:hover {
-  background-color: #0056b3; /* Darker blue on hover */
+  background-color: #aaf3b3; /* Darker Green on hover */
   transform: translateY(-2px); /* Move up slightly on hover */
 }
 
 .toggleOrientationButton:active {
-  background-color: #004085; /* Even darker blue when clicked */
+  background-color: #3c8958; /* Even darker green when clicked */
   transform: translateY(1px); /* Move down slightly when clicked */
 }
 
 .positionComputerButton {
-  background-color: #28a745; /* Green background */
+  background-color: #4CAF50; /* Green background */
   color: white; /* White text */
   padding: 12px 24px; /* Padding */
   border: none; /* No border */
