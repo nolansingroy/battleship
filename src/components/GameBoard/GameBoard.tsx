@@ -31,6 +31,7 @@ const GameBoard: React.FC = () => {
   const [orientation, setOrientation] = useState<'horizontal' | 'vertical'>(
     'horizontal'
   );
+  const [winner, setWinner] = useState<'player' | 'computer' | null>(null);
 
   // define the type for the ship
   type GridCell = 'empty' | 'ship'; // Add other states as needed
@@ -67,9 +68,6 @@ const GameBoard: React.FC = () => {
       setPlayerScore((prevScore) => prevScore + 1);
       playHitSound();
       console.log('player scores');
-    } else {
-      setGamePhase('gameOver');
-      triggerConfetti(); // confetti animation
     }
   };
 
@@ -86,10 +84,7 @@ const GameBoard: React.FC = () => {
   };
 
   const areAllShipsSunk = (grid: any[]) => {
-    // Log the entire grid for debugging
     console.log('Grid:', grid);
-
-    // Count the number of 'hit' cells
     let hitCount = 0;
     grid.forEach((row) => {
       row.forEach((cell: string) => {
@@ -100,7 +95,6 @@ const GameBoard: React.FC = () => {
     });
 
     console.log('Hit count:', hitCount);
-
     // Check if the number of 'hit' cells equals the total number of ship tiles
     const totalShipTiles = 15; // Total number of ship tiles
     return hitCount === totalShipTiles;
@@ -133,15 +127,16 @@ const GameBoard: React.FC = () => {
 
         attacked = true;
         console.log(`Computer attacked: Row ${row + 1}, Column ${col + 1}`);
+        //determine gameOver Outcome//
+        if (areAllShipsSunk(computerAttackGrid)) {
+          console.log('set GameOver - computer won');
+          setWinner('computer');
+          console.log(`winner state: ${winner}`);
+          setGamePhase('gameOver');
+        } else {
+          setIsPlayersTurn(true);
+        }
       }
-    }
-
-    // After updating the grid, check if all player ships are sunk
-    if (areAllShipsSunk(computerAttackGrid)) {
-      setGamePhase('gameOver');
-      console.log('set GameOver - computer won');
-    } else {
-      setIsPlayersTurn(true);
     }
   };
 
@@ -171,6 +166,8 @@ const GameBoard: React.FC = () => {
     setAttackGrid(newAttackGrid); // Update the attack grid state
     // After updating the attack grid, check if all computer ships are sunk
     if (areAllShipsSunk(newAttackGrid)) {
+      setWinner('player');
+      console.log(`winner state: ${winner}`);
       setGamePhase('gameOver');
       console.log('gameover - you won');
       //update a variable
@@ -387,9 +384,11 @@ const GameBoard: React.FC = () => {
       {gamePhase === 'gameOver' && (
         <div className="game-over-container">
           <p className="game-message">
-            {areAllShipsSunk(grid)
-              ? 'Game Over: You Lose!'
-              : 'Game Over: You Win!'}
+            {winner === 'player'
+              ? 'Game Over: You Win!'
+              : winner === 'computer'
+                ? 'Game Over: You Lose!'
+                : 'Game Over: Unexpected Outcome'}
           </p>
           <button
             className="playAgainBtn"
@@ -510,89 +509,90 @@ export default GameBoard;
 
 ////// --- Exporting Functions for Jest Testing --- /////
 
-export const areAllShipsSunk = (grid: any[]) => {
-  // Log the entire grid for debugging
-  console.log('Grid:', grid);
+// export const areAllShipsSunk = (grid: any[]) => {
+//   // Log the entire grid for debugging
+//   console.log('Grid:', grid);
 
-  // Count the number of 'hit' cells
-  let hitCount = 0;
-  grid.forEach((row) => {
-    row.forEach((cell: string) => {
-      if (cell === 'hit') {
-        hitCount++;
-      }
-    });
-  });
+//   // Count the number of 'hit' cells
+//   let hitCount = 0;
+//   grid.forEach((row) => {
+//     row.forEach((cell: string) => {
+//       if (cell === 'hit') {
+//         hitCount++;
+//       }
+//     });
+//   });
 
-  console.log('Hit count:', hitCount);
+//   console.log('Hit count:', hitCount);
 
-  // Check if the number of 'hit' cells equals the total number of ship tiles
-  const totalShipTiles = 15; // Total number of ship tiles
-  return hitCount === totalShipTiles;
-};
+//   // Check if the number of 'hit' cells equals the total number of ship tiles
+//   const totalShipTiles = 15; // Total number of ship tiles
+//   return hitCount === totalShipTiles;
+// };
 
 //// playerScore ///////
-export const playerScores = (
-  playerScore: number,
-  setPlayerScore: (arg0: (prevScore: number) => number) => void,
-  setGamePhase: (arg0: string) => void,
-  playHitSound: () => void,
-  triggerConfetti: () => void
-) => {
-  if (playerScore < 15) {
-    setPlayerScore((prevScore: number) => prevScore + 1);
-    playHitSound();
-    // console.log('player scores'); // Commented out as logs are not usually tested
-  } else {
-    setGamePhase('gameOver');
-    triggerConfetti();
-  }
-};
+// export const playerScores = (
+//   playerScore: number,
+//   setPlayerScore: (arg0: (prevScore: number) => number) => void,
+//   setGamePhase: (arg0: string) => void,
+//   playHitSound: () => void,
+//   triggerConfetti: () => void
+// ) => {
+//   if (playerScore < 15) {
+//     setPlayerScore((prevScore: number) => prevScore + 1);
+//     playHitSound();
+//     // console.log('player scores'); // Commented out as logs are not usually tested
+//   } else {
+//     setGamePhase('gameOver');
+//     triggerConfetti();
+//   }
+// };
 
-export const handlePlayerAttack = (
-  row: number,
-  col: number,
-  isPlayersTurn: boolean,
-  attackGrid: string[][],
-  computerGrid: string[][],
-  setAttackGrid: (grid: string[][]) => void,
-  playerScores: () => void,
-  playMissSound: () => void,
-  areAllShipsSunk: (grid: string[][]) => boolean,
-  setGamePhase: (phase: string) => void,
-  setIsPlayersTurn: (isTurn: boolean) => void,
-  handleComputerAttack: () => void
-) => {
-  if (!isPlayersTurn || attackGrid[row][col] !== 'empty') {
-    return; // Ignore if it's not the player's turn or if the cell is already attacked
-  }
+// export const handlePlayerAttack = (
+//   row: number,
+//   col: number,
+//   isPlayersTurn: boolean,
+//   attackGrid: string[][],
+//   computerGrid: string[][],
+//   setAttackGrid: (grid: string[][]) => void,
+//   playerScores: () => void,
+//   playMissSound: () => void,
+//   areAllShipsSunk: (grid: string[][]) => boolean,
+//   setGamePhase: (phase: string) => void,
+//   setIsPlayersTurn: (isTurn: boolean) => void,
+//   handleComputerAttack: () => void
+// ) => {
+//   if (!isPlayersTurn || attackGrid[row][col] !== 'empty') {
+//     return; // Ignore if it's not the player's turn or if the cell is already attacked
+//   }
 
-  // Check if the cell on the attackGrid has already been attacked
-  if (attackGrid[row][col] !== 'empty') {
-    return; // Ignore if the cell has already been attacked
-  }
+//   // Check if the cell on the attackGrid has already been attacked
+//   if (attackGrid[row][col] !== 'empty') {
+//     return; // Ignore if the cell has already been attacked
+//   }
 
-  const newAttackGrid = attackGrid.map((r) => [...r]);
+//   const newAttackGrid = attackGrid.map((r) => [...r]);
 
-  // Check the computer's grid to see if there's a ship at the specified coordinates
-  if (computerGrid[row][col] === 'ship') {
-    newAttackGrid[row][col] = 'hit'; // Mark as hit on the attack grid
-    console.log('missile hit a ship!');
-    playerScores(); // update player scores function
-  } else {
-    newAttackGrid[row][col] = 'miss'; // Mark as miss on the attack grid
-    console.log('missile missed!');
-    playMissSound();
-  }
+//   // Check the computer's grid to see if there's a ship at the specified coordinates
+//   if (computerGrid[row][col] === 'ship') {
+//     newAttackGrid[row][col] = 'hit'; // Mark as hit on the attack grid
+//     console.log('missile hit a ship!');
+//     playerScores(); // update player scores function
+//   } else {
+//     newAttackGrid[row][col] = 'miss'; // Mark as miss on the attack grid
+//     console.log('missile missed!');
+//     playMissSound();
+//   }
 
-  setAttackGrid(newAttackGrid); // Update the attack grid state
-  // After updating the attack grid, check if all computer ships are sunk
-  if (areAllShipsSunk(newAttackGrid)) {
-    setGamePhase('gameOver');
-    console.log('gameover - you won');
-    //update a variable
-  } else {
-    setIsPlayersTurn(false);
-    setTimeout(handleComputerAttack, 500);
-  }
-};
+//   setAttackGrid(newAttackGrid); // Update the attack grid state
+//   // After updating the attack grid, check if all computer ships are sunk
+//   if (areAllShipsSunk(newAttackGrid)) {
+//     setWinner('player')
+//     setGamePhase('gameOver');
+//     console.log('gameover - you won');
+//     //update a variable
+//   } else {
+//     setIsPlayersTurn(false);
+//     setTimeout(handleComputerAttack, 500);
+//   }
+// };
